@@ -19,15 +19,19 @@ const App = () => {
         <Router>
           <div className="w-full h-screen flex bg-[#F6F8FA]">
             <Sidebar />
-            <div className="w-full flex flex-col ">
-              <Header />
-              <Routes>
-                <Route path="/files" element={<Files />} />
-                <Route path="/" element={<Home />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/rates" element={<Rates />} />
-                <Route path="/tasks" element={<Tasks />} />
-              </Routes>
+            <div className="left-[70px] w-full flex flex-col">
+              <div className="w-full z-10">
+                <Header />
+              </div>
+              <div className="top-[70px] w-full z-0 flex-grow">
+                <Routes>
+                  <Route path="/files" element={<Files />} />
+                  <Route path="/" element={<Home />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/rates" element={<Rates />} />
+                  <Route path="/tasks" element={<Tasks />} />
+                </Routes>
+              </div>
             </div>
           </div>
         </Router>

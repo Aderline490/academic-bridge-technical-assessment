@@ -1,6 +1,6 @@
 const Header = () => {
   return (
-    <div className="bg-white w-full h-[70px] flex justify-between">
+    <div className="fixed z-100 bg-white w-full px-20 h-[70px] flex justify-between">
       <div className="w-1/4 flex justify-center items-center p-5">
         <input
           type="text"

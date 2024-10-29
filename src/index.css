@@ -10,8 +10,9 @@ body {
 }
 
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: "#F6F8FA";
+  box-sizing: border-box
 }
 
 *,

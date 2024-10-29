@@ -4,16 +4,18 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         main: "#5349C3",
-        light_main: "#F9F9F9",
+        light_main: "#F1F1F9",
         gray: "#7b8592",
         light_gray: "#DBDDE1"
 
       },
       fontFamily: {
+        inter: ["Inter", "sans-serif"],
         segoe: ["Segoe UI", "sans-serif"],
         times: ["Times New Roman", "serif"],
       },

@@ -5,21 +5,21 @@ import person2 from "../assets/face-2.jpg";
 import person3 from "../assets/face-3.jpg";
 
 const Sidebar = () => {
-  const activeStyle = "border-l-4 border-[#5349C3] bg-[#5349C3]/10" ;
+  const activeStyle = "border-l-[7px] shadow-inner-border text-main bg-gradient-to-r from-light_main to-white border-[#5349C3] bg-[#5349C3]/10" ;
   return (
-    <div className="flex bg-white flex-col h-full w-[80px] flex flex-col items-center mr-1 justify-between py-4">
+    <div className="fixed left-0 h-screen flex bg-white flex-col  w-[80px] flex flex-col items-center mr-1 justify-between py-2">
       <div className="w-full flex justify-center">
         <img src={logo} className="w-2/3" />
       </div>
-      <div className="flex flex-col space-y-8 w-full justify-center items-center">
-        <NavLink to="/"  >
+      <div className="flex flex-col space-y-2 w-full justify-center items-center">
+        <NavLink to="/"  className={({ isActive }) => `w-full h-12 flex items-center justify-center  ${isActive ? activeStyle : "text-gray"}`} >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6 text-gray"
+            className="size-6"
           >
             <path
               strokeLinecap="round"
@@ -28,14 +28,14 @@ const Sidebar = () => {
             />
           </svg>
         </NavLink>
-        <NavLink to="/messages">
+        <NavLink to="/messages" className={({ isActive }) => `w-full h-12 flex items-center justify-center ${isActive ? activeStyle : "text-gray"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className="size-6 text-gray"
+            className="size-6"
           >
             <path
               stroke-linecap="round"
@@ -45,14 +45,14 @@ const Sidebar = () => {
           </svg>
         </NavLink>
 
-        <NavLink to="/files">
+        <NavLink to="/files" className={({ isActive }) => `w-full h-12 flex items-center justify-center ${isActive ? activeStyle : "text-gray"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className="size-6 text-gray"
+            className="size-6"
           >
             <path
               stroke-linecap="round"
@@ -62,14 +62,14 @@ const Sidebar = () => {
           </svg>
         </NavLink>
 
-        <NavLink to="/tasks">
+        <NavLink to="/tasks" className={({ isActive }) => `w-full h-12 flex items-center justify-center ${isActive ? activeStyle : "text-gray"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className="size-6 text-gray"
+            className="size-6"
           >
             <path
               stroke-linecap="round"
@@ -79,14 +79,14 @@ const Sidebar = () => {
           </svg>
         </NavLink>
 
-        <NavLink to="/rates">
+        <NavLink to="/rates" className={({ isActive }) => `w-full h-12 flex items-center justify-center ${isActive ? activeStyle : "text-gray"}`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            className="size-6 text-gray"
+            className="size-6"
           >
             <path
               stroke-linecap="round"
