@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import TaskCard from "../components/TaskCard";
 import TaskTab from "../components/TaskTab";
@@ -10,17 +11,21 @@ import person3 from "../assets/face-3.jpg";
 import person4 from "../assets/face-4.jpg";
 
 import { Task } from "../types/Task";
-import {useTasks, useCreateTask, useDeleteTask} from "../hooks/taskHooks"
+import {useTasks, useCreateTask, useDeleteTask, useUpdateTask} from "../hooks/taskHooks"
 
 const Tasks = () => {
+  const { t } = useTranslation();
+
   const [hovered, setHovered] = useState(false);
   const [copied, setCopied] = useState(false);
   const [selectedTab, setSelectedTab] = useState("all");
   const [isModalOpen, setModalOpen] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
 
-  const { data: tasks, isLoading, error } = useTasks();
+  const { data: tasks} = useTasks();
   const addTaskMutation = useCreateTask();
   const deleteTaskMutation = useDeleteTask();
+  const editTaskMutation = useUpdateTask();
 
   
   const totalTasks = tasks?.length || 0;
@@ -58,24 +63,41 @@ const Tasks = () => {
     deleteTaskMutation.mutate(taskId);
   };
 
+  const handleEditClick = (task: Task) => {
+    setTaskToEdit(task);
+    setModalOpen(true);
+  };
+
+  const handleEditTask = (task: Task) => {
+    editTaskMutation.mutate({
+      id: task.id,
+      taskData: task,
+    });
+    console.log("Editing task", task);
+    setTaskToEdit(null);
+  };
+
   const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
+  const closeModal = () => {
+    setModalOpen(false);
+    setTaskToEdit(null);
+  };
 
 
   return (
     <div className="dark:bg-dark_bg bg-light_bg w-full flex flex-col p-8 space-y-20 pr-24">
-      <NewTask isOpen={isModalOpen} onClose={closeModal} handleAddTask={handleAddTask}/>
+      <NewTask isOpen={isModalOpen} onClose={closeModal} handleAddTask={handleAddTask} handleEditTask={handleEditTask} taskToEdit={taskToEdit}/>
       <div className="w-full flex space-x-1 justify-between">
         <div>
           <div className="space-y-6">
             <p className="text-md font-bold dark:text-white">
               {" "}
               <span className="text-[#9F9DA5]">
-                Workspace &gt; Creative &gt;
+              {t('workspace')} &gt; {t('creative')} &gt;
               </span>{" "}
-              Creative Website
+              {t('creativeWebsite')}
             </p>
-            <h1 className="text-4xl font-extrabold dark:text-white">Website Design</h1>
+            <h1 className="text-4xl font-extrabold dark:text-white">{t('websiteDesign')}</h1>
             <div className="flex space-x-6">
               <div className="flex space-x-2">
                 <svg
@@ -92,7 +114,7 @@ const Tasks = () => {
                     d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
                   />
                 </svg>
-                <p className="font-bold dark:text-white">Limited Access</p>
+                <p className="font-bold dark:text-white">{t('limitedAccess')}</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -144,10 +166,10 @@ const Tasks = () => {
         </div>
         <div className="flex flex-col space-y-16">
           <div className="flex flex-col items-end w-full">
-            <p className="dark:text-white">From 23 April</p>
+            <p className="dark:text-white">{t('from23april')}</p>
             <div className="flex items-center space-x-2">
               <div className="bg-green-500 h-2 w-2 rounded-full"></div>
-              <p className="text-gray dark:font-bold">Updated 12 min ago</p>
+              <p className="text-gray dark:font-bold">{t('updatedminsago')}</p>
             </div>
           </div>
           <div className="flex space-x-6 items-center">
@@ -213,11 +235,8 @@ const Tasks = () => {
         openModal={openModal}
         />
 
-          <TaskCard  tasks={filteredTasks} onDeleteTask={handleDeleteTask}/>
+          <TaskCard tasks={filteredTasks} onDeleteTask={handleDeleteTask} onEditTask={handleEditClick}/>
       </div>
-      {/* <div className="fixed absolute left-100 w-[500px] h-screen bg-gray">
-
-      </div> */}
     </div>
   );
 };

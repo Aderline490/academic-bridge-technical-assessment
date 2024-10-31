@@ -24,14 +24,14 @@ export const createTask = async (taskData: Omit<Task, "id">): Promise<Task> => {
   return response.data;
 };
 
-export const updateTask = async (id: number, taskData: Partial<Task>) => {
-  const response = await api.put(`/${id}`, taskData);
+export const updateTask = async (id: number) => {
+  const response = await api.put(`/${id}`, {completed: false});
   console.log(response);
   return response.data.todos;
 };
 
 export const deleteTask = async (id: number) => {
   const response = await api.delete(`/${id}`);
-  console.log(response);
-  return response.data.todos;
+  console.log("deleteresponse", response);
+  return response.data.id;
 };

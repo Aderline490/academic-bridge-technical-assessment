@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider, useTheme } from "./context/ThemeContext";
+import { useTranslation } from 'react-i18next'; 
+import './i18n'; 
 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
@@ -15,6 +17,7 @@ import Profile from "./pages/Profile";
 const queryClient = new QueryClient();
 
 const App = () => {
+  const { t } = useTranslation(); 
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>

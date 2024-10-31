@@ -1,0 +1,23 @@
+{
+    "todo": "To Do",
+    "inProgress": "In Progress",
+    "alltasks": "All tasks",
+    "completed": "Completed",
+    "comments": "{{count}} comment",
+    "comments_plural": "{{count}} comments",
+    "task1": "Design the homepage",
+    "task2": "Develop API endpoints",
+    "workspace": "Workspace",
+    "creativeWebsite": "Creative Website",
+    "updated": "Updated",
+    "websiteDesign": "Website Design",
+    "limitedAccess": "Limited access",
+    "copyLink": "Copy Link",
+    "delete": "Delete",
+    "search":"Search",
+    "creative":"Creative",
+    "updatedminsago": "Updated 12 minutes",
+  "from23april": "From 23 April",
+  "filterandsort": "Filter and sort",
+  "newtask": "New task"
+  }

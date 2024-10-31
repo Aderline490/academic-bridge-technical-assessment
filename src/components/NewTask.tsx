@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Task } from "../types/Task";
 
@@ -6,21 +6,32 @@ interface NewTaskModalProps {
   isOpen: boolean;
   onClose: () => void;
   handleAddTask: (newTask: Task) => void;
+  handleEditTask: (newTask: Task) => void;
+  taskToEdit?: Task | null;
 }
 
-const NewTask: React.FC<NewTaskModalProps> = ({ isOpen, onClose, handleAddTask }) => {
-  const [title, setTitle] = useState("");
-
-  if (!isOpen) return null;
-
-  const handleSave = () => {
-    if (title.trim()) {
-      handleAddTask({ todo: title, completed: false, userId: 1, id: Date.now()});
-      setTitle("");
-      onClose();
+const NewTask: React.FC<NewTaskModalProps> = ({ isOpen, onClose, handleAddTask, handleEditTask, taskToEdit }) => {
+    const [title, setTitle] = useState(taskToEdit?.todo || "");
+  const [taskData, setTaskData] = useState<Task>(taskToEdit || { id: 0, todo: "", completed: false, userId: 1 });
+  
+  useEffect(() => {
+    if (taskToEdit) {
+      setTaskData(taskToEdit);
+      setTitle(taskToEdit.todo);
     }
-  };
+  }, [taskToEdit]);
 
+  const handleSubmit = () => {
+    if (taskToEdit) {
+      handleEditTask(taskData);
+    } else {
+      handleAddTask(taskData);
+    }
+    onClose();
+  };
+  if (!isOpen) {
+    return null;
+  }
   return (
     <div className="fixed z-100 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="dark:bg-dark_white bg-white rounded-lg p-6 w-full max-w-lg">
@@ -32,7 +43,10 @@ const NewTask: React.FC<NewTaskModalProps> = ({ isOpen, onClose, handleAddTask }
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+                setTitle(e.target.value);
+                setTaskData({ ...taskData, todo: e.target.value });
+              }}
             className="mt-1 block w-full h-[50px] bg-light_main outline-none rounded-md shadow-sm focus:ring focus:ring-main p-4"
           />
         </label>
@@ -46,9 +60,9 @@ const NewTask: React.FC<NewTaskModalProps> = ({ isOpen, onClose, handleAddTask }
           </button>
           <button
             className="px-4 py-2 bg-main text-white rounded-md hover:bg-indigo-700"
-            onClick={handleSave}
+            onClick={handleSubmit}
           >
-            Save Task
+            {taskToEdit ? "Update Task" : "Add Task"}
           </button>
         </div>
       </div>

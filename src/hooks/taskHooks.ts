@@ -69,18 +69,54 @@ export const useCreateTask = () => {
   );
 };
 
+// export const useUpdateTask = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation<Task, Error, { id: number; taskData: Partial<Task> }>({
+//     mutationFn: ({ id, taskData }) => updateTask(id, taskData),
+//     onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks']}),
+//   });
+// };
+
 export const useUpdateTask = () => {
   const queryClient = useQueryClient();
   return useMutation<Task, Error, { id: number; taskData: Partial<Task> }>({
-    mutationFn: ({ id, taskData }) => updateTask(id, taskData),
-    onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks']}),
+    mutationFn: async ({ id, taskData }) => {
+      await updateTask(id);
+      return { id, ...taskData } as Task;
+    },
+    onSuccess: (updatedTask) => {
+      queryClient.setQueryData<Task[]>(["tasks"], (oldTasks = []) =>
+        oldTasks.map((task) =>
+          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+        )
+      );
+      console.log("Task updated in cache:", updatedTask);
+      console.log("Updated cache:", queryClient.getQueryData(["tasks"]));
+      // queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
   });
 };
+
+// export const useDeleteTask = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation<void, Error, number>({
+//     mutationFn: deleteTask,
+//     onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks']}),
+//   });
+// };
+
 
 export const useDeleteTask = () => {
   const queryClient = useQueryClient();
   return useMutation<void, Error, number>({
     mutationFn: deleteTask,
-    onSuccess: () => queryClient.invalidateQueries({queryKey: ['tasks']}),
+    onSuccess: (deletedTaskId) => {
+      queryClient.setQueryData<Task[]>(["tasks"], (oldTasks = []) =>
+        oldTasks.filter((task) => task.id !== deletedTaskId)
+      );
+
+      console.log("Task deleted from cache:", deletedTaskId);
+      console.log("Updated cache:", queryClient.getQueryData(["tasks"]));
+    },
   });
 };
