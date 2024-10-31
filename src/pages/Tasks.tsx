@@ -2,39 +2,80 @@ import { useState } from "react";
 
 import TaskCard from "../components/TaskCard";
 import TaskTab from "../components/TaskTab";
+import NewTask from "../components/NewTask";
+
 import person1 from "../assets/face-1.jpg";
 import person2 from "../assets/face-2.jpg";
 import person3 from "../assets/face-3.jpg";
 import person4 from "../assets/face-4.jpg";
 
+import { Task } from "../types/Task";
+import {useTasks, useCreateTask, useDeleteTask} from "../hooks/taskHooks"
+
 const Tasks = () => {
   const [hovered, setHovered] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("all");
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const { data: tasks, isLoading, error } = useTasks();
+  const addTaskMutation = useCreateTask();
+  const deleteTaskMutation = useDeleteTask();
+
+  
+  const totalTasks = tasks?.length || 0;
+  const completedTasksCount = tasks?.filter(task => task.completed).length || 0;
+  const toDoTasksCount = totalTasks - completedTasksCount;
+
+  
+  const filteredTasks = tasks?.filter(task => {
+    if (selectedTab === "completed") return task.completed;
+    if (selectedTab === "todo") return !task.completed;
+    return true;
+  });
+
+  const handleTabChange = (tab:any) => {
+    setSelectedTab(tab);
+  };
 
   const handleCopy = () => {
     navigator.clipboard
-      .writeText("https://example.com") // Replace with your link
+      .writeText("https://example.com")
       .then(() => {
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // Reset "Copied!" message after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
       })
       .catch((error) => {
         console.error("Failed to copy text: ", error);
       });
   };
+
+  const handleAddTask = (newTask: Task) => {
+    addTaskMutation.mutate(newTask);
+  };
+
+  const handleDeleteTask = (taskId:number) => {
+    deleteTaskMutation.mutate(taskId);
+  };
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+
   return (
-    <div className="bg-[#F6F8FA] w-full flex flex-col p-8 space-y-20 z-0 pr-24">
+    <div className="dark:bg-dark_bg bg-light_bg w-full flex flex-col p-8 space-y-20 pr-24">
+      <NewTask isOpen={isModalOpen} onClose={closeModal} handleAddTask={handleAddTask}/>
       <div className="w-full flex space-x-1 justify-between">
         <div>
           <div className="space-y-6">
-            <p className="text-md font-bold">
+            <p className="text-md font-bold dark:text-white">
               {" "}
               <span className="text-[#9F9DA5]">
                 Workspace &gt; Creative &gt;
               </span>{" "}
               Creative Website
             </p>
-            <h1 className="text-4xl font-extrabold">Website Design</h1>
+            <h1 className="text-4xl font-extrabold dark:text-white">Website Design</h1>
             <div className="flex space-x-6">
               <div className="flex space-x-2">
                 <svg
@@ -51,7 +92,7 @@ const Tasks = () => {
                     d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
                   />
                 </svg>
-                <p className="font-bold">Limited Access</p>
+                <p className="font-bold dark:text-white">Limited Access</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -103,10 +144,10 @@ const Tasks = () => {
         </div>
         <div className="flex flex-col space-y-16">
           <div className="flex flex-col items-end w-full">
-            <p>From 23 April</p>
-            <div className="flex items-center space-x-4">
+            <p className="dark:text-white">From 23 April</p>
+            <div className="flex items-center space-x-2">
               <div className="bg-green-500 h-2 w-2 rounded-full"></div>
-              <p className="text-gray">Updated 12 min ago</p>
+              <p className="text-gray dark:font-bold">Updated 12 min ago</p>
             </div>
           </div>
           <div className="flex space-x-6 items-center">
@@ -164,9 +205,19 @@ const Tasks = () => {
         </div>
       </div>
       <div className="w-full flex flex-col space-y-8">
-          <TaskTab />
-          <TaskCard />
+          <TaskTab onTabChange={handleTabChange}
+        totalTasks={totalTasks}
+        completedTasksCount={completedTasksCount}
+        toDoTasksCount={toDoTasksCount}
+        activeTab={selectedTab}
+        openModal={openModal}
+        />
+
+          <TaskCard  tasks={filteredTasks} onDeleteTask={handleDeleteTask}/>
       </div>
+      {/* <div className="fixed absolute left-100 w-[500px] h-screen bg-gray">
+
+      </div> */}
     </div>
   );
 };

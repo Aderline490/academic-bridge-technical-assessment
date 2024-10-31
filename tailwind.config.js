@@ -11,8 +11,10 @@ export default {
         main: "#5349C3",
         light_main: "#F1F1F9",
         gray: "#7b8592",
-        light_gray: "#DBDDE1"
-
+        light_gray: "#DBDDE1",
+        light_bg: "#F6F8FA",
+        dark_bg: "#1F2937",
+        dark_white: "#374151"
       },
       fontFamily: {
         inter: ["Inter", "sans-serif"],

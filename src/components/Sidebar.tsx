@@ -5,11 +5,11 @@ import person2 from "../assets/face-2.jpg";
 import person3 from "../assets/face-3.jpg";
 
 const Sidebar = () => {
-  const activeStyle = "border-l-[7px] shadow-inner-border text-main bg-gradient-to-r from-light_main to-white border-[#5349C3] bg-[#5349C3]/10" ;
+  const activeStyle = "border-l-[7px] shadow-inner-border text-main bg-gradient-to-r dark:from-dark_bg from:light_main to:white dark:to-dark_white border-[#5349C3]" ;
   return (
-    <div className="fixed left-0 h-screen flex bg-white flex-col  w-[80px] flex flex-col items-center mr-1 justify-between py-2">
+    <div className="fixed left-0 h-screen flex dark:bg-dark_white bg-white flex-col w-[80px] flex flex-col items-center mr-1 justify-between py-2">
       <div className="w-full flex justify-center">
-        <img src={logo} className="w-2/3" />
+        <img src={logo} className="w-5/6" />
       </div>
       <div className="flex flex-col space-y-2 w-full justify-center items-center">
         <NavLink to="/"  className={({ isActive }) => `w-full h-12 flex items-center justify-center  ${isActive ? activeStyle : "text-gray"}`} >
@@ -100,25 +100,26 @@ const Sidebar = () => {
         <img
           src={person1}
           alt=""
-          className="w-8 h-8 rounded-full object-cover"
+          className="w-8 h-8 rounded-full object-cover cursor-pointer"
         />
         <img
           src={person2}
           alt=""
-          className="w-8 h-8 rounded-full object-cover"
+          className="w-8 h-8 rounded-full object-cover cursor-pointer"
         />
         <img
           src={person3}
           alt=""
-          className="w-8 h-8 rounded-full object-cover"
+          className="w-8 h-8 rounded-full object-cover cursor-pointer"
         />
 
-        <div className="w-8 h-8 border border-[2px] rounded-full border-light_gray border-dashed flex justify-center items-center">
+        <div className="w-8 h-8 border border-[2px] rounded-full border-light_gray border-dashed flex justify-center items-center dark:text-white cursor-pointer">
           {" "}
           +{" "}
         </div>
       </div>
-      <div className="space-y-8 flex flex-col flex-end">
+      <div className="space-y-2 flex flex-col flex-end w-full">
+      <NavLink to="/settings" className={({ isActive }) => `w-full h-12 flex items-center justify-center ${isActive ? activeStyle : "text-gray"}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -138,7 +139,8 @@ const Sidebar = () => {
             d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
           />
         </svg>
-
+        </NavLink>
+        <NavLink to="/profile" className={({ isActive }) => `w-full h-12 flex items-center justify-center ${isActive ? activeStyle : "text-gray"}`}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -153,6 +155,7 @@ const Sidebar = () => {
             d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
           />
         </svg>
+        </NavLink>
       </div>
     </div>
   );

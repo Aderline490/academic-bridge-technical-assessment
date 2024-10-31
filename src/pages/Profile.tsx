@@ -1,9 +1,9 @@
-const Home = () => {
+const Profile = () => {
     return (
         <div className="dark:text-white flex justify-center items-center h-screen">
-            Home Page Content Here...
+            Profile Page Content Here...
         </div>
     )
 }
 
-export default Home;
+export default Profile;

@@ -1,6 +1,6 @@
 const Files = () => {
     return (
-        <div>
+        <div className="dark:text-white flex justify-center items-center h-screen">
             Files Page Content Here...
         </div>
     )
